@@ -1,0 +1,26 @@
+@import "~normalize.css";
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+}
+
+@keyframes highlight {
+  from { background-color: red; }
+  to { background-color: white; }
+}
+
+.highlight {
+    animation: highlight 1s ease-out;
+}

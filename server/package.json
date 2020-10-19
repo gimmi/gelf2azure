@@ -1,0 +1,15 @@
+{
+  "name": "gelf2azure",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "debug": "^4.2.0",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "is-gzip": "^2.0.0",
+    "node-fetch": "^2.6.1",
+    "proxy-agent": "^4.0.0"
+  }
+}
