@@ -28,5 +28,18 @@ nc.exe -u 127.0.0.1 12201
 ### Send message from Docker container
 
 ```
-docker run --rm -it --log-driver gelf –-log-opt gelf-address=udp://172.16.0.13:12201 alpine echo 'Some thing'
+docker run --rm -it --log-driver gelf --log-opt gelf-address=udp://172.16.0.13:12201 alpine echo 'Some thing'
+```
+
+### Setup Docker to send logs to gelf2azure
+
+```
+vi /etc/docker/daemon.json
+
+{
+    "log-driver": "gelf",
+    "log-opts": {
+        "gelf-address": "udp://172.16.0.13:12201"
+    }
+}
 ```
