@@ -1,8 +1,0 @@
-{
-  "azure": {
-    "customerId": "",
-    "sharedKey": "",
-    "logType": "",
-    "batchMs": 5000
-  }
-}

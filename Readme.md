@@ -6,10 +6,12 @@ docker build --pull -t gelf2azure:latest .
 docker run --rm -it `
     -p 12201:12201/udp `
     -p 8080:8080 `
-    -v 'C:\Users\gimmi\Sources\gelf2azure:/data' `
     -e DEBUG=app:* `
-    gelf2azure:latest `
-    file:///data/config.json
+    -e AZURE_CUSTOMER_ID=TODO `
+    -e AZURE_SHARED_KEY=TODO `
+    -e AZURE_LOG_TYPE=TODO `
+    -e AZURE_BATCH_MS=TODO `
+    gelf2azure:latest
 ```
 
 ### Send test messages
