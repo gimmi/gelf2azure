@@ -70,11 +70,12 @@ export class MainComponent extends React.Component {
             margin: 0,
             borderRight: '1px solid lightgray',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            flex: '0 0 auto'
         }
         const logsStyle = {
             margin: 0,
-            flexGrow: 1,
+            flex: '1 1 auto',
             display: 'flex',
             flexDirection: 'column',
             padding: '.5em',
