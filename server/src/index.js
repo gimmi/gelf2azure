@@ -9,9 +9,9 @@ const config = {
     batchMs: parseInt(process.env.AZURE_BATCH_MS || '5000', 10)
 }
 
-gelf.create().bind(12201, () => console.log('GELF UDP listener running'))
+gelf.create().bind(12201, () => console.log('GELF UDP listener bound on port 12201'))
 
-app.create().listen(8080, () => console.log('Web app running'))
+app.create().listen(54313, () => console.log('Web app bound on port 54313'))
 
 if (config.customerId) {
     console.log(`Starting Azure send loop customerId=${config.customerId} logType=${config.logType} batchMs=${config.batchMs}`)

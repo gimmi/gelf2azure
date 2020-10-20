@@ -1,12 +1,16 @@
 ### Run in docker
 
 ```
-docker build --pull -t gelf2azure:latest .
+docker build --pull `
+    --build-arg HTTP_PROXY=http://my.proxy.com:80 `
+    --build-arg HTTPS_PROXY=http://my.proxy.com:80 `
+    -t gelf2azure:latest .
 
 docker run --rm -it `
     -p 12201:12201/udp `
-    -p 8080:8080 `
+    -p 54313:54313 `
     -e DEBUG=app:* `
+    -e HTTPS_PROXY=http://my.proxy.com:80 `
     -e AZURE_CUSTOMER_ID=TODO `
     -e AZURE_SHARED_KEY=TODO `
     -e AZURE_LOG_TYPE=TODO `
