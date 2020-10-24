@@ -1,5 +1,6 @@
 import React from 'react';
 import ConnectionOverlay from './ConnectionOverlay';
+import LogsComponent from './LogsComponent';
 import settings from './settings';
 
 export class MainComponent extends React.Component {
@@ -41,7 +42,7 @@ export class MainComponent extends React.Component {
         }
 
         if (state.categories[category].selected) {
-            const log = state.logs.length >= 100 ? state.logs.shift() : { key: state.logs.length }
+            const log = state.logs.length >= 500 ? state.logs.shift() : { key: state.logs.length }
             log.category = category;
             log.text = text;
             state.logs.push(log);
@@ -74,14 +75,7 @@ export class MainComponent extends React.Component {
             flex: '0 0 auto'
         }
         const logsStyle = {
-            margin: 0,
-            flex: '1 1 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '.5em',
-            justifyContent: 'flex-end',
-            overflow: 'hidden',
-            fontFamily: 'monospace',
+            flex: '1 1 auto'
         }
 
         const catEls = Object.keys(this.state.categories).map(key => {
@@ -89,15 +83,12 @@ export class MainComponent extends React.Component {
             return <li key={key} className="highlight"><input type="checkbox" checked={val.selected} onChange={() => this.toggleCategory(key)} /> {val.count} {key}</li>
         });
 
-        const logEls = this.state.logs.map(l => <li key={l.key} className="highlight">{l.category}: {l.text}</li>);
         return (
             <div style={{ flexGrow: 1, display: 'flex' }}>
                 <ul style={categoriesStyle}>
                     {catEls}
                 </ul>
-                <ul style={logsStyle}>
-                    {logEls}
-                </ul>
+                <LogsComponent style={logsStyle} logs={this.state.logs} />
                 <ConnectionOverlay connected={this.state.connected} />
             </div>
         );
