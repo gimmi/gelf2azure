@@ -1,6 +1,5 @@
 import React from 'react';
 import produce from 'immer'
-import ConnectionOverlay from './ConnectionOverlay';
 import LogsComponent from './LogsComponent';
 import settings from './settings';
 
@@ -10,7 +9,6 @@ export class MainComponent extends React.Component {
 
         settings.exclusions = new Set(settings.exclusions);
         this.state = {
-            connected: false,
             categories: {},
             logs: []
         };
@@ -22,9 +20,12 @@ export class MainComponent extends React.Component {
 
     componentDidMount() {
         this.ws = new WebSocket(`ws://${window.location.host}/ws`);
-        this.ws.onopen = () => this.setState(produce(state => { state.connected = true }));
-        this.ws.onclose = () => this.setState(produce(state => { state.connected = false }));
-        this.ws.onerror = () => this.setState(produce(state => { state.connected = false }));
+        this.ws.onclose = e => {
+            if (!e.wasClean) {
+                console.error('Websocket dirty close', e);
+            }
+        }
+        this.ws.onerror = e => console.error('Websocket error', e);
         this.ws.onmessage = message => this.onWsMessage(JSON.parse(message.data));
     }
 
@@ -86,7 +87,6 @@ export class MainComponent extends React.Component {
                     {catEls}
                 </ul>
                 <LogsComponent style={this.logsStyle} logs={this.state.logs} />
-                <ConnectionOverlay connected={this.state.connected} />
             </div>
         );
     }
