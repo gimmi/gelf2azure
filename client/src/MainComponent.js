@@ -15,7 +15,8 @@ export class MainComponent extends React.Component {
         };
 
         this.logsStyle = {
-            flex: '1 1 auto'
+            flex: '1 1 auto',
+            padding: '.5em'
         }
     }
 
@@ -69,7 +70,7 @@ export class MainComponent extends React.Component {
 
     render() {
         const categoriesStyle = {
-            padding: 0,
+            padding: '.5em',
             margin: 0,
             display: 'flex',
             flexDirection: 'column',

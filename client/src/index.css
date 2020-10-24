@@ -11,8 +11,12 @@ html {
 
 body {
     font-family: monospace;
+    font-size: 16px;
     height: 100%;
     width: 100%;
+
+    background-color: #272822;
+    color:  #F8F8F2;
 }
 
 #root {
@@ -21,12 +25,22 @@ body {
 }
 
 @keyframes highlight {
-  from { background-color: red; }
-  to { background-color: white; }
+  from { color: #F92672; }
+  to { color: #F8F8F2; }
 }
 
 .highlight {
-    animation: highlight 1s ease-out;
+    animation: highlight 2s ease-out;
 }
 
-@import "./split.css";
+/* https://github.com/nathancahill/split/tree/master/packages/splitjs#css */
+.gutter {
+    background-color: #32332d;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+}
