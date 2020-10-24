@@ -1,12 +1,16 @@
 @import "~normalize.css";
 
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
 html {
     height: 100%;
     width: 100%;
 }
 
 body {
-    font-family: sans-serif;
+    font-family: monospace;
     height: 100%;
     width: 100%;
 }
@@ -24,3 +28,5 @@ body {
 .highlight {
     animation: highlight 1s ease-out;
 }
+
+@import "./split.css";

@@ -1,5 +1,6 @@
 import React from 'react';
 import produce from 'immer'
+import Split from 'react-split'
 import LogsComponent from './LogsComponent';
 import settings from './settings';
 
@@ -68,12 +69,13 @@ export class MainComponent extends React.Component {
 
     render() {
         const categoriesStyle = {
-            padding: '.5em',
+            padding: 0,
             margin: 0,
-            borderRight: '1px solid lightgray',
             display: 'flex',
             flexDirection: 'column',
-            flex: '0 0 auto'
+            flex: '0 0 auto',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden'
         }
 
         const catEls = Object.keys(this.state.categories).map(key => {
@@ -82,12 +84,12 @@ export class MainComponent extends React.Component {
         });
 
         return (
-            <div style={{ flexGrow: 1, display: 'flex' }}>
+            <Split style={{ flexGrow: 1, display: 'flex' }} sizes={settings.splitSizes || [10, 90]} onDragEnd={sizes => settings.splitSizes = sizes}>
                 <ul style={categoriesStyle}>
                     {catEls}
                 </ul>
                 <LogsComponent style={this.logsStyle} logs={this.state.logs} />
-            </div>
+            </Split>
         );
     }
 }
