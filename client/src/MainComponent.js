@@ -1,4 +1,5 @@
 import React from 'react';
+import produce from 'immer'
 import ConnectionOverlay from './ConnectionOverlay';
 import LogsComponent from './LogsComponent';
 import settings from './settings';
@@ -13,46 +14,46 @@ export class MainComponent extends React.Component {
             categories: {},
             logs: []
         };
+
+        this.logsStyle = {
+            flex: '1 1 auto'
+        }
     }
 
     componentDidMount() {
         this.ws = new WebSocket(`ws://${window.location.host}/ws`);
-        this.ws.onopen = () => this.setState({ connected: true });
-        this.ws.onclose = () => this.setState({ connected: false });
-        this.ws.onerror = () => this.setState({ connected: false });
-        this.ws.onmessage = message => {
-            this.setState(state => {
-                return this.appendLog(state, JSON.parse(message.data))
-            })
-        }
+        this.ws.onopen = () => this.setState(produce(state => { state.connected = true }));
+        this.ws.onclose = () => this.setState(produce(state => { state.connected = false }));
+        this.ws.onerror = () => this.setState(produce(state => { state.connected = false }));
+        this.ws.onmessage = message => this.onWsMessage(JSON.parse(message.data));
     }
 
     componentWillUnmount() {
         this.ws.close();
     }
 
-    appendLog(state, message) {
-        const category = message.container_name || 'unknown';
-        const text = message.log || 'unknown';
+    onWsMessage(message) {
+        this.setState(produce(state => {
+            const category = message.container_name || 'unknown';
+            const text = message.log || 'unknown';
 
-        if (state.categories[category]) {
-            state.categories[category].count += 1
-        } else {
-            state.categories[category] = { count: 1, selected: !settings.exclusions.has(category) }
-        }
+            if (state.categories[category]) {
+                state.categories[category].count += 1
+            } else {
+                state.categories[category] = { count: 1, selected: !settings.exclusions.has(category) }
+            }
 
-        if (state.categories[category].selected) {
-            const log = state.logs.length >= 500 ? state.logs.shift() : { key: state.logs.length }
-            log.category = category;
-            log.text = text;
-            state.logs.push(log);
-        }
-
-        return state;
+            if (state.categories[category].selected) {
+                const log = state.logs.length >= 500 ? state.logs.shift() : { key: state.logs.length }
+                log.category = category;
+                log.text = text;
+                state.logs.push(log);
+            }
+        }))
     }
 
     toggleCategory(catName) {
-        this.setState(state => {
+        this.setState(produce(state => {
             const cat = state.categories[catName];
             if (cat.selected) {
                 cat.selected = false
@@ -61,8 +62,7 @@ export class MainComponent extends React.Component {
                 cat.selected = true
                 settings.exclusions.delete(catName)
             }
-            return { categories: state.categories }
-        })
+        }))
     }
 
     render() {
@@ -73,9 +73,6 @@ export class MainComponent extends React.Component {
             display: 'flex',
             flexDirection: 'column',
             flex: '0 0 auto'
-        }
-        const logsStyle = {
-            flex: '1 1 auto'
         }
 
         const catEls = Object.keys(this.state.categories).map(key => {
@@ -88,7 +85,7 @@ export class MainComponent extends React.Component {
                 <ul style={categoriesStyle}>
                     {catEls}
                 </ul>
-                <LogsComponent style={logsStyle} logs={this.state.logs} />
+                <LogsComponent style={this.logsStyle} logs={this.state.logs} />
                 <ConnectionOverlay connected={this.state.connected} />
             </div>
         );
