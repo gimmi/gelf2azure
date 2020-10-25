@@ -1,6 +1,4 @@
 if ($args[0] -eq "s") {
-    Start-Process -FilePath "http://localhost:54313/"
-
     cd "$PSScriptRoot\server"
     if (-not (Test-Path node_modules)) {
         npm install
@@ -10,6 +8,8 @@ if ($args[0] -eq "s") {
 }
 
 if ($args[0] -eq "c") {
+    Start-Process -FilePath "http://localhost:54313/"
+
     cd "$PSScriptRoot\client"
     if (-not (Test-Path node_modules)) {
         npm install

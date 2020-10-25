@@ -22,7 +22,7 @@ setInterval(() => {
     const gelf = {
         version: '1.1',
         host: 'example.org',
-        short_message: sampleText + counter,
+        short_message: `${sampleText} ${counter} ${'Blah '.repeat(rndFn(1, 30))}`,
         timestamp: new Date().getTime() / 1000,
         _container_name: containerName
     }
