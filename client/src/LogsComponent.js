@@ -24,7 +24,12 @@ export default class LogsComponent extends React.PureComponent {
             overflowY: 'scroll'
         }, this.props.style)
 
-        const logEls = this.props.logs.map(l => <li key={l.key} className="highlight">{l.category}: {l.text}</li>)
+        const logEls = this.props.logs.map(l => (
+            <li key={l.key} className="log-wrapper">
+                <div className="log-category">{l.category}</div>
+                <div className="highlight">{l.text}</div>
+            </li>
+        ))
         return (
             <ul style={logsStyle} ref={this.logsRef}>
                 {logEls}

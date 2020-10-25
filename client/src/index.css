@@ -44,3 +44,13 @@ body {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
     cursor: col-resize;
 }
+
+.log-wrapper:hover {
+  background-color: #3B3C37;
+}
+
+.log-category {
+    float: right;
+    font-size: .8em;
+    color: #75715E;
+}

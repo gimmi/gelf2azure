@@ -37,7 +37,7 @@ export class MainComponent extends React.Component {
 
     onWsMessage(message) {
         this.setState(produce(state => {
-            const category = message.container_name || 'unknown';
+            const category = `${message.host || 'unknown'}/${message.container_name || 'unknown'}`
             const text = message.log || 'unknown';
 
             if (state.categories[category]) {
