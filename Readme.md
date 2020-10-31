@@ -1,21 +1,32 @@
-### Run in docker
+Receive (Docker) logs in GELF format from UDP, send it to Azure Monitor via REST API
+
+### Getting started
+
+Open a terminal and launch gelf2azure docker container:
+
+```
+docker run --rm -it -p 12201:12201/udp -p 54313:54313 gimmi/gelf2azure:latest
+```
+
+Open with your browser http://127.0.0.1:54313
+
+Open another terminal and send sample log from a Docker container
+
+```
+docker run --rm -it --name my_container --log-driver gelf --log-opt gelf-address=udp://127.0.0.1:12201 alpine echo 'Hello world!'
+```
+
+You should see the log "Hello world!" appear in the browser window:
+
+[](docs/browser.png)
+
+### Build from sources
 
 ```
 docker build --pull `
     --build-arg HTTP_PROXY=http://my.proxy.com:80 `
     --build-arg HTTPS_PROXY=http://my.proxy.com:80 `
     -t gelf2azure:latest .
-
-docker run --rm -it `
-    -p 12201:12201/udp `
-    -p 54313:54313 `
-    -e DEBUG=app:* `
-    -e HTTPS_PROXY=http://my.proxy.com:80 `
-    -e AZURE_CUSTOMER_ID=TODO `
-    -e AZURE_SHARED_KEY=TODO `
-    -e AZURE_LOG_TYPE=TODO `
-    -e AZURE_BATCH_MS=TODO `
-    gelf2azure:latest
 ```
 
 ### Send test messages
