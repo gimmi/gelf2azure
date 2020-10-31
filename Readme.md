@@ -13,12 +13,16 @@ Open with your browser http://127.0.0.1:54313
 Open another terminal and send sample log from a Docker container
 
 ```
-docker run --rm -it --name my_container --log-driver gelf --log-opt gelf-address=udp://127.0.0.1:12201 alpine echo 'Hello world!'
+docker run --rm -it \
+  --name my_container \
+  --log-driver gelf \
+  --log-opt gelf-address=udp://127.0.0.1:12201 \
+  alpine echo 'Hello world!'
 ```
 
 You should see the log "Hello world!" appear in the browser window:
 
-[](docs/browser.png)
+![](./docs/browser.png)
 
 ### Build from sources
 
