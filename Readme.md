@@ -22,7 +22,7 @@ docker run --rm -it \
 
 You should see the log "Hello world!" appear in the browser window:
 
-![](./docs/browser.png)
+![](https://raw.githubusercontent.com/gimmi/gelf2azure/main/docs/browser.png)
 
 Message can be sent from any source, as long as GELF format is used. The following example uses `netcat` to send message:
 
