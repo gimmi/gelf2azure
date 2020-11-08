@@ -35,6 +35,7 @@ module.exports = function (env) {
         },
         plugins: [
             new HtmlWebpackPlugin({
+                favicon: './src/favicon.png',
                 template: './src/index.html'
             })
         ]
