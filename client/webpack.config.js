@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (env) {
-    const ifDev = (val, other) => env !== 'production' ? val : other;
+    const ifDev = (devVal, otherVal) => env.development ? devVal : otherVal;
 
     return {
         mode: 'none',
@@ -16,7 +16,7 @@ module.exports = function (env) {
         },
         output: {
             path: path.resolve(__dirname, '..', 'server', 'src', 'static'),
-            filename: ifDev('[name].js', '[hash].js')
+            filename: ifDev('[name].js', '[fullhash].js')
         },
         devtool: ifDev('source-map', false),
         optimization: {
