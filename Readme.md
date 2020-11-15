@@ -37,9 +37,9 @@ Configuration is done by passing environment variables:
 
 | Environment Variable | Default | Description                                                                                                                                 |
 |:---------------------|:--------|:--------------------------------------------------------------------------------------------------------------------------------------------|
-| AZURE_CUSTOMER_ID    |         | `CustomerID` (AKA Workspace ID) parameter for [Azure Monitor Data Collector API][1]. Leaving this unset will disable sending data to Azure. |
-| AZURE_SHARED_KEY     |         | `SharedKey` (AKA Primary Key) parameter for [Azure Monitor Data Collector API][1]                                                           |
-| AZURE_LOG_TYPE       |         | `Log-Type` parameter for [Azure Monitor Data Collector API][1]                                                                              |
+| AZURE_CUSTOMER_ID    |         | `CustomerID` (AKA Workspace ID) parameter for [Azure API][1]. Leaving this unset will disable sending data to Azure. |
+| AZURE_SHARED_KEY     |         | `SharedKey` (AKA Primary Key) parameter for [Azure API][1]                                                           |
+| AZURE_LOG_TYPE       |         | `Log-Type` parameter for [Azure API][1]                                                                              |
 | AZURE_BATCH_MS       | 5000    | How often Azure Monitor REST call is made                                                                                                   |
 | HTTPS_PROXY          |         | Set proxy if needed, something like `http://my.proxy.com:80`                                                                                |
 | DEBUG                |         | Use value `app:*` to enable internal logging. Useful for troubleshooting                                                                    |
