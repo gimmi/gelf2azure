@@ -1,5 +1,6 @@
 const debug = require('debug')('app:azure-monitor')
 const crypto = require('crypto')
+const AbortController = require('abort-controller')
 const fetch = require('./fetch')
 const bus = require('./bus')
 
@@ -45,23 +46,35 @@ async function send(config, logs) {
         .update(signature)
         .digest('base64')
 
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Authorization': `SharedKey ${config.customerId}:${signature}`,
-            'Content-Type': 'application/json',
-            'Content-Length': data.length,
-            'x-ms-date': date,
-            'Log-Type': config.logType,
-            'time-generated-field': 'ts'
-        },
-        body: data
-    })
+    const abortController = new AbortController();
+    const timeoutHandle = setTimeout(() => abortController.abort(), config.batchMs)
 
-    debug('HTTP %d %s', res.status, res.statusText)
+    try {
+        const res = await fetch(url, {
+            signal: abortController.signal,
+            method: 'POST',
+            headers: {
+                'Authorization': `SharedKey ${config.customerId}:${signature}`,
+                'Content-Type': 'application/json',
+                'Content-Length': data.length,
+                'x-ms-date': date,
+                'Log-Type': config.logType,
+                'time-generated-field': 'ts'
+            },
+            body: data
+        })
 
-    if (!res.ok) {
-        throw new Error(`HTTP ${res.status} ${res.statusText}`)
+        debug('HTTP %d %s', res.status, res.statusText)
+
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status} ${res.statusText}`)
+        }
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            throw new Error(`Azure API call timed out after ${config.batchMs}ms`)
+        }
+    } finally {
+        clearTimeout(timeoutHandle)
     }
 }
 

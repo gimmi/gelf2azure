@@ -16,8 +16,8 @@ const client = dgram.createSocket('udp4');
 let counter = 0;
 setInterval(() => {
     counter += 1;
-    const containerName = containerNames[rndFn(0, 3)]
-    const sampleText = sampleTexts[rndFn(0, 4)]
+    const containerName = containerNames[rndFn(0, containerNames.length - 1)]
+    const sampleText = sampleTexts[rndFn(0, sampleTexts.length - 1)]
 
     const gelf = {
         version: '1.1',
