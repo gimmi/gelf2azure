@@ -85,7 +85,7 @@ export class MainComponent extends React.Component {
 
         return (
             <React.Fragment>
-                <Split style={{ flexGrow: 1, display: 'flex' }} sizes={settings.splitSizes || [10, 90]} onDragEnd={sizes => settings.splitSizes = sizes}>
+                <Split style={{ flexGrow: 1, display: 'flex', overflow: 'auto' }} sizes={settings.splitSizes || [10, 90]} onDragEnd={sizes => settings.splitSizes = sizes}>
                     <ul style={categoriesStyle}>
                         {catEls}
                     </ul>

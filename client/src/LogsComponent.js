@@ -21,7 +21,8 @@ export default class LogsComponent extends React.PureComponent {
             display: 'flex',
             flexDirection: 'column',
             listStyleType: 'none',
-            overflowY: 'scroll'
+            overflowY: 'scroll',
+            overflowWrap: 'break-word'
         }, this.props.style)
 
         const logEls = this.props.logs.map(l => (
