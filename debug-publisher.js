@@ -18,14 +18,19 @@ setInterval(() => {
     counter += 1;
     const containerName = containerNames[rndFn(0, containerNames.length - 1)]
     const sampleText = sampleTexts[rndFn(0, sampleTexts.length - 1)]
+    let shortMessage = `${sampleText} ${counter} ${'Blah '.repeat(rndFn(1, 300))}`
+
+    if (rndFn(1, 5) === 1) {
+        shortMessage = shortMessage.replace(/\s/g, 'x')
+    }
 
     const gelf = {
         version: '1.1',
         host: 'example.org',
-        short_message: `${sampleText} ${counter} ${'Blah '.repeat(rndFn(1, 30))}`,
+        short_message: shortMessage,
         timestamp: new Date().getTime() / 1000,
         _container_name: containerName
     }
     console.dir(gelf)
     client.send(JSON.stringify(gelf), 12201)
-}, 1000);
+}, 100);
