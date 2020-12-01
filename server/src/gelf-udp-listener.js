@@ -4,7 +4,9 @@ const dgram = require('dgram')
 const zlib = require('zlib')
 const isGzip = require('is-gzip')
 
-module.exports.create = function () {
+Object.assign(module.exports, { create, process })
+
+function create() {
     return dgram.createSocket('udp4')
         .on('message', onMessage)
         .on('error', onError)
@@ -48,7 +50,6 @@ function process(buffer) {
         if (chunks.some(x => x === null)) {
             return
         }
-        clearTimeout(chunks.timeoutId)
         buffer = Buffer.concat(chunks)
     }
 
