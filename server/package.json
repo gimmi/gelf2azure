@@ -2,7 +2,10 @@
   "name": "gelf2azure",
   "version": "0.1.0",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "test": "jasmine --random=false src/**/*.spec.js",
+    "testd": "node --inspect-brk node_modules/jasmine/bin/jasmine.js src/**/*.spec.js"
+  },
   "dependencies": {
     "abort-controller": "^3.0.0",
     "body-parser": "^1.19.0",
@@ -12,5 +15,8 @@
     "is-gzip": "^2.0.0",
     "node-fetch": "^2.6.1",
     "proxy-agent": "^4.0.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.6.3"
   }
 }

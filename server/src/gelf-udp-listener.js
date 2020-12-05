@@ -1,10 +1,13 @@
 const debug = require('debug')('app:gelf-udp-listener')
+const util = require('util')
 const bus = require('./bus')
 const dgram = require('dgram')
-const zlib = require('zlib')
+const gunzip = util.promisify(require('zlib').gunzip)
 const isGzip = require('is-gzip')
 
-module.exports.create = function () {
+Object.assign(module.exports, { create, process })
+
+function create() {
     return dgram.createSocket('udp4')
         .on('message', onMessage)
         .on('error', onError)
@@ -15,24 +18,34 @@ function onError(err) {
 }
 
 function onMessage(buffer) {
-    if (isGzip(buffer)) {
-        zlib.gunzip(buffer, (err, buffer) => {
-            if (err) {
-                console.error(err)
-                return
-            }
-
-            process(buffer)
-        })
-    } else {
-        process(buffer)
-    }
+    process(buffer).catch(console.error)
 }
 
-function process(buffer) {
+const chunkedMessages = {}
+
+async function process(buffer) {
     if (buffer[0] === 0x1E && buffer[1] === 0x0F) {
-        console.error('Skipping chunked message, they seems to be not sent by Docker gelf plugin')
-        return
+        const id = buffer.readBigUInt64LE(2)
+        const index = buffer.readInt8(10)
+        const count = buffer.readInt8(11)
+
+        debug('Message %d chunk %d of %d', id, index, count)
+
+        if (!chunkedMessages[id]) {
+            chunkedMessages[id] = new Array(count).fill(null)
+            setTimeout(() => delete chunkedMessages[id], 5000)
+        }
+        const chunks = chunkedMessages[id]
+        chunks[index] = buffer.slice(12)
+        if (chunks.some(x => x === null)) {
+            return
+        }
+        buffer = Buffer.concat(chunks)
+    }
+
+    if (isGzip(buffer)) {
+        debug('gzipped message detected')
+        buffer = await gunzip(buffer)
     }
 
     const json = buffer.toString('utf8', 0)
