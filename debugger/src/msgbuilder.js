@@ -1,5 +1,3 @@
-const dgram = require('dgram');
-
 const rndFn = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const containerNames = ['container-one', 'container-two', 'container-three', 'container-four']
@@ -12,9 +10,9 @@ const sampleTexts = [
     '<7>ConsoleApp.Program[10] Debug message #',
 ]
 
-const client = dgram.createSocket('udp4');
 let counter = 0;
-setInterval(() => {
+
+module.exports = function() {
     counter += 1;
     const containerName = containerNames[rndFn(0, containerNames.length - 1)]
     const sampleText = sampleTexts[rndFn(0, sampleTexts.length - 1)]
@@ -24,13 +22,11 @@ setInterval(() => {
         shortMessage = shortMessage.replace(/\s/g, 'x')
     }
 
-    const gelf = {
+    return {
         version: '1.1',
         host: 'example.org',
         short_message: shortMessage,
         timestamp: new Date().getTime() / 1000,
         _container_name: containerName
     }
-    console.dir(gelf)
-    client.send(JSON.stringify(gelf), 12201)
-}, 100);
+}

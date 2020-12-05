@@ -1,0 +1,9 @@
+{
+  "name": "gelf2azure",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "graygelf": "^2.0.0"
+  }
+}

@@ -17,6 +17,10 @@ if ($args[0] -eq "c") {
     npm run watch
 }
 
-if ($args[0] -eq "p") {
-    node "$PSScriptRoot\debug-publisher.js"
+if ($args[0] -eq "d") {
+    cd "$PSScriptRoot\debugger"
+    if (-not (Test-Path node_modules)) {
+        npm install
+    }
+    node src\index.js
 }
