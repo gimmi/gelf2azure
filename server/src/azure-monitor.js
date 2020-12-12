@@ -1,8 +1,13 @@
-const debug = require('debug')('app:azure-monitor')
+const debugFn = require('debug')
 const crypto = require('crypto')
 const AbortController = require('abort-controller')
+
 const fetch = require('./fetch')
 const bus = require('./bus')
+
+const debug = debugFn('app:azure-monitor')
+
+Object.assign(module.exports, { sendLoop })
 
 async function sendLoop(config) {
     let batch = []
@@ -77,5 +82,3 @@ async function send(config, logs) {
         clearTimeout(timeoutHandle)
     }
 }
-
-Object.assign(module.exports, { sendLoop, send })

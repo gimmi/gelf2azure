@@ -1,8 +1,10 @@
-const debug = require('debug')('app:express')
+const debugFn = require('debug')
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const expressWs = require('express-ws')
+
+const debug = debugFn('app:express')
 const bus = require('./bus');
 
 module.exports.create = function () {

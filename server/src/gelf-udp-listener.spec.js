@@ -1,9 +1,11 @@
 /* eslint-env jasmine */
 
+const util = require('util')
+const zlib = require('zlib')
 const bus = require('./bus')
 const gelf = require('./gelf-udp-listener')
-const util = require('util')
-const gzip = util.promisify(require('zlib').gzip)
+
+const gzip = util.promisify(zlib.gzip)
 
 describe('gelf-udp-listener', () => {
     const logs = []

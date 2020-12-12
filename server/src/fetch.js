@@ -1,5 +1,3 @@
-'use strict';
-
 const fetch = require('node-fetch')
 const ProxyAgent = require('proxy-agent')
 

@@ -1,9 +1,13 @@
-const debug = require('debug')('app:gelf-udp-listener')
+const debugFn = require('debug')
 const util = require('util')
-const bus = require('./bus')
 const dgram = require('dgram')
-const gunzip = util.promisify(require('zlib').gunzip)
+const zlib = require('zlib')
 const isGzip = require('is-gzip')
+
+const bus = require('./bus')
+
+const debug = debugFn('app:gelf-udp-listener')
+const gunzip = util.promisify(zlib.gunzip)
 
 Object.assign(module.exports, { create, process })
 
