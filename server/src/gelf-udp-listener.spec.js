@@ -21,7 +21,7 @@ describe('gelf-udp-listener', () => {
     })
 
     it('Should emit messages', async function() {
-        await gelf.process(Buffer.from(JSON.stringify({
+        await gelf.processMessage(Buffer.from(JSON.stringify({
             host: 'host',
             timestamp: 0,
             short_message: 'short_message',
@@ -52,7 +52,7 @@ describe('gelf-udp-listener', () => {
             _container_name: '_container_name'
         }))
 
-         await gelf.process(Buffer.concat([buf, msg]))
+         await gelf.processMessage(Buffer.concat([buf, msg]))
 
         expect(logs.length).toEqual(1)
         expect(logs[0]).toEqual({
@@ -78,7 +78,7 @@ describe('gelf-udp-listener', () => {
         head1.writeBigUInt64LE(id, 2)
         head1.writeInt8(0, 10)
         head1.writeInt8(2, 11)
-        await gelf.process(Buffer.concat([head1, msg.slice(0, Math.floor(msg.length / 2))]))
+        await gelf.processMessage(Buffer.concat([head1, msg.slice(0, Math.floor(msg.length / 2))]))
 
         expect(logs.length).toEqual(0)
 
@@ -88,7 +88,7 @@ describe('gelf-udp-listener', () => {
         head2.writeBigUInt64LE(id, 2)
         head2.writeInt8(1, 10)
         head2.writeInt8(2, 11)
-        await gelf.process(Buffer.concat([head2, msg.slice(Math.floor(msg.length / 2))]))
+        await gelf.processMessage(Buffer.concat([head2, msg.slice(Math.floor(msg.length / 2))]))
 
         expect(logs.length).toEqual(1)
         expect(logs[0]).toEqual({
@@ -114,7 +114,7 @@ describe('gelf-udp-listener', () => {
         head1.writeBigUInt64LE(id, 2)
         head1.writeInt8(0, 10)
         head1.writeInt8(2, 11)
-        await gelf.process(Buffer.concat([head1, msg.slice(0, Math.floor(msg.length / 2))]))
+        await gelf.processMessage(Buffer.concat([head1, msg.slice(0, Math.floor(msg.length / 2))]))
 
         expect(logs.length).toEqual(0)
 
@@ -124,7 +124,7 @@ describe('gelf-udp-listener', () => {
         head2.writeBigUInt64LE(id, 2)
         head2.writeInt8(1, 10)
         head2.writeInt8(2, 11)
-        await gelf.process(Buffer.concat([head2, msg.slice(Math.floor(msg.length / 2))]))
+        await gelf.processMessage(Buffer.concat([head2, msg.slice(Math.floor(msg.length / 2))]))
 
         expect(logs.length).toEqual(1)
         expect(logs[0]).toEqual({
