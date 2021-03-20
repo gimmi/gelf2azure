@@ -14,7 +14,7 @@ export class MainComponent extends React.Component {
             connected: false,
             categories: {},
             logs: []
-        };
+        }
 
         this.logsStyle = {
             flex: '1 1 auto',
@@ -36,18 +36,18 @@ export class MainComponent extends React.Component {
 
     onWsMessage(message) {
         this.setState(produce(state => {
-            const category = `${message.host || 'unknown'}/${message.container_name || 'unknown'}`
+            const catName = `${message.host || 'unknown'}/${message.container_name || 'unknown'}`
             const text = message.log || 'unknown';
 
-            if (state.categories[category]) {
-                state.categories[category].count += 1
+            if (state.categories[catName]) {
+                state.categories[catName].count += 1
             } else {
-                state.categories[category] = { count: 1, selected: !settings.exclusions.has(category) }
+                state.categories[catName] = { count: 1, selected: !settings.exclusions.has(catName) }
             }
 
-            if (state.categories[category].selected) {
+            if (state.categories[catName].selected) {
                 const log = state.logs.length >= 500 ? state.logs.shift() : { key: state.logs.length }
-                log.category = category;
+                log.category = catName;
                 log.text = text;
                 state.logs.push(log);
             }
@@ -78,10 +78,11 @@ export class MainComponent extends React.Component {
             overflow: 'hidden'
         }
 
-        const catEls = Object.keys(this.state.categories).map(key => {
-            const val = this.state.categories[key]
-            return <li key={key} className="highlight"><input type="checkbox" checked={val.selected} onChange={() => this.toggleCategory(key)} /> {val.count} {key}</li>
-        });
+        const catEls = Object.keys(this.state.categories).map(catName => {
+            const cat = this.state.categories[catName]
+            const checkbox = <input type="checkbox" checked={cat.selected} onChange={() => this.toggleCategory(catName)} />
+            return <li key={catName} className="highlight">{checkbox} {cat.count} {catName}</li>
+        })
 
         return (
             <React.Fragment>
