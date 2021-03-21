@@ -100,7 +100,12 @@ export class MainComponent extends React.Component {
 
         const catEls = this.state.categories.map(cat => {
             const checkbox = <input type="checkbox" checked={cat.selected} onChange={() => this.toggleCategory(cat.name)} />
-            return <li key={cat.name}>{checkbox} {cat.count} {cat.name}</li>
+            const className = cat.selected ? '' : 'disabled-category'
+            return (
+                <li key={cat.name}>
+                    <label className={className}>{checkbox} {cat.count} {cat.name}</label>
+                </li>
+            )
         })
 
         return (
