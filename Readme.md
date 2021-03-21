@@ -52,9 +52,9 @@ docker build --pull --no-cache -t gimmi/gelf2azure:latest .
 
 ### Setup Docker to send logs to gelf2azure
 
-```
-vi /etc/docker/daemon.json
+gelf2azure is designed to be used with [gelf built-in Docker logging plugin](https://docs.docker.com/config/containers/logging/gelf/). To enable it, modify `/etc/docker/daemon.json` as follows:
 
+```json
 {
     "log-driver": "gelf",
     "log-opts": {
