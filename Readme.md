@@ -44,12 +44,6 @@ Configuration is done by passing environment variables:
 | HTTPS_PROXY          |         | Set proxy if needed, something like `http://my.proxy.com:80`                                                         |
 | DEBUG                |         | Use value `app:*` to enable internal logging. Useful for troubleshooting                                             |
 
-### Build from sources
-
-```
-docker build --pull --no-cache -t gimmi/gelf2azure:latest .
-```
-
 ### Setup Docker to send logs to gelf2azure
 
 gelf2azure is designed to be used with [gelf built-in Docker logging plugin](https://docs.docker.com/config/containers/logging/gelf/). To enable it, modify `/etc/docker/daemon.json` as follows:
@@ -61,6 +55,12 @@ gelf2azure is designed to be used with [gelf built-in Docker logging plugin](htt
         "gelf-address": "udp://172.16.0.13:12201"
     }
 }
+```
+
+### Build from sources
+
+```
+docker build --pull --no-cache -t gimmi/gelf2azure:latest .
 ```
 
 [1]: https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api
