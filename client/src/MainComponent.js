@@ -13,6 +13,7 @@ export class MainComponent extends React.Component {
         categories.forEach(x => x.count = 0)
         this.state = {
             connected: false,
+            allSelected: true,
             categories: categories,
             logs: []
         }
@@ -43,7 +44,7 @@ export class MainComponent extends React.Component {
 
             category.count += 1
 
-            if (category.selected) {
+            if (state.allSelected && category.selected) {
                 const log = state.logs.length >= 500 ? state.logs.shift() : { key: state.logs.length }
                 log.category = catName;
                 log.text = text;
@@ -87,6 +88,12 @@ export class MainComponent extends React.Component {
         }))
     }
 
+    toggleAll() {
+        this.setState(state => ({
+            allSelected: !state.allSelected
+        }))
+    }
+
     render() {
         const categoriesStyle = {
             padding: '.5em',
@@ -100,7 +107,7 @@ export class MainComponent extends React.Component {
 
         const catEls = this.state.categories.map(cat => {
             const checkbox = <input type="checkbox" checked={cat.selected} onChange={() => this.toggleCategory(cat.name)} />
-            const className = cat.selected ? '' : 'disabled-category'
+            const className = this.state.allSelected && cat.selected ? '' : 'disabled-category'
             return (
                 <li key={cat.name}>
                     <label className={className}>{checkbox} {cat.count} {cat.name}</label>
@@ -112,6 +119,9 @@ export class MainComponent extends React.Component {
             <React.Fragment>
                 <Split style={{ flexGrow: 1, display: 'flex', overflow: 'auto' }} sizes={storage.get('splitSizes', [10, 90])} onDragEnd={sizes => storage.set('splitSizes', sizes)}>
                     <ul style={categoriesStyle}>
+                        <li>
+                            <label><input type="checkbox" checked={this.state.allSelected} onChange={() => this.toggleAll()} /> ALL</label>
+                        </li>
                         {catEls}
                     </ul>
                     <LogsComponent style={this.logsStyle} logs={this.state.logs} />
