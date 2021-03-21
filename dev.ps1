@@ -1,4 +1,11 @@
-if ($args[0] -eq "s") {
+param (
+    [String]
+    [Parameter(Mandatory=$true)]
+    [ValidateSet('server', 'client', 'debugger')]
+    $Cmd
+)
+
+if ($Cmd -eq 'server') {
     cd "$PSScriptRoot\server"
     if (-not (Test-Path node_modules)) {
         npm install
@@ -7,7 +14,7 @@ if ($args[0] -eq "s") {
     node src\index.js
 }
 
-if ($args[0] -eq "c") {
+if ($Cmd -eq 'client') {
     Start-Process -FilePath "http://localhost:54313/"
 
     cd "$PSScriptRoot\client"
@@ -17,7 +24,7 @@ if ($args[0] -eq "c") {
     npm run watch
 }
 
-if ($args[0] -eq "d") {
+if ($Cmd -eq 'debugger') {
     cd "$PSScriptRoot\debugger"
     if (-not (Test-Path node_modules)) {
         npm install

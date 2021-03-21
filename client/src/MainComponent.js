@@ -3,18 +3,20 @@ import produce from 'immer'
 import ConnectionOverlay from './ConnectionOverlay';
 import Split from 'react-split'
 import LogsComponent from './LogsComponent';
-import settings from './settings';
+import storage from './storage';
 
 export class MainComponent extends React.Component {
     constructor(props) {
         super(props);
 
-        settings.exclusions = new Set(settings.exclusions);
+        const categories = storage.get('categories', [])
+        categories.forEach(x => x.count = 0)
         this.state = {
             connected: false,
-            categories: {},
+            allSelected: true,
+            categories: categories,
             logs: []
-        };
+        }
 
         this.logsStyle = {
             flex: '1 1 auto',
@@ -36,34 +38,59 @@ export class MainComponent extends React.Component {
 
     onWsMessage(message) {
         this.setState(produce(state => {
-            const category = `${message.host || 'unknown'}/${message.container_name || 'unknown'}`
+            const catName = `${message.host || 'unknown'}/${message.container_name || 'unknown'}`
             const text = message.log || 'unknown';
+            const category = this.getOrAddCategory(state.categories, catName)
 
-            if (state.categories[category]) {
-                state.categories[category].count += 1
-            } else {
-                state.categories[category] = { count: 1, selected: !settings.exclusions.has(category) }
-            }
+            category.count += 1
 
-            if (state.categories[category].selected) {
+            if (state.allSelected && category.selected) {
                 const log = state.logs.length >= 500 ? state.logs.shift() : { key: state.logs.length }
-                log.category = category;
+                log.category = catName;
                 log.text = text;
                 state.logs.push(log);
             }
         }))
     }
 
+    getOrAddCategory(cats, catName) {
+        const newCat = { name: catName, count: 0, selected: true };
+
+        for (let i = 0; i < cats.length; i++) {
+            const curCat = cats[i]
+            const cmp = catName.localeCompare(curCat.name)
+            if (cmp === 0) {
+                return curCat
+            }
+
+            if (cmp < 0) {
+                cats.splice(i, 0, newCat);
+                storage.set('categories', cats)
+                return newCat
+            }
+        }
+
+        cats.push(newCat)
+        storage.set('categories', cats)
+        return newCat
+    }
+
     toggleCategory(catName) {
         this.setState(produce(state => {
-            const cat = state.categories[catName];
+            const cat = state.categories.find(x => x.name === catName);
             if (cat.selected) {
                 cat.selected = false
-                settings.exclusions.add(catName)
             } else {
                 cat.selected = true
-                settings.exclusions.delete(catName)
             }
+
+            storage.set('categories', state.categories)
+        }))
+    }
+
+    toggleAll() {
+        this.setState(state => ({
+            allSelected: !state.allSelected
         }))
     }
 
@@ -78,15 +105,23 @@ export class MainComponent extends React.Component {
             overflow: 'hidden'
         }
 
-        const catEls = Object.keys(this.state.categories).map(key => {
-            const val = this.state.categories[key]
-            return <li key={key} className="highlight"><input type="checkbox" checked={val.selected} onChange={() => this.toggleCategory(key)} /> {val.count} {key}</li>
-        });
+        const catEls = this.state.categories.map(cat => {
+            const checkbox = <input type="checkbox" checked={cat.selected} onChange={() => this.toggleCategory(cat.name)} />
+            const className = this.state.allSelected && cat.selected ? '' : 'disabled-category'
+            return (
+                <li key={cat.name}>
+                    <label className={className}>{checkbox} {cat.count} {cat.name}</label>
+                </li>
+            )
+        })
 
         return (
             <React.Fragment>
-                <Split style={{ flexGrow: 1, display: 'flex', overflow: 'auto' }} sizes={settings.splitSizes || [10, 90]} onDragEnd={sizes => settings.splitSizes = sizes}>
+                <Split style={{ flexGrow: 1, display: 'flex', overflow: 'auto' }} sizes={storage.get('splitSizes', [10, 90])} onDragEnd={sizes => storage.set('splitSizes', sizes)}>
                     <ul style={categoriesStyle}>
+                        <li>
+                            <label><input type="checkbox" checked={this.state.allSelected} onChange={() => this.toggleAll()} /> ALL</label>
+                        </li>
                         {catEls}
                     </ul>
                     <LogsComponent style={this.logsStyle} logs={this.state.logs} />

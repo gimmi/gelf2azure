@@ -54,3 +54,7 @@ body {
     font-size: .8em;
     color: #75715E;
 }
+
+.disabled-category {
+    color: #75715E;
+}
