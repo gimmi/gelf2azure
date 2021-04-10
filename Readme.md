@@ -2,6 +2,8 @@ gelf2azure is a Docker container that receive logs in GELF format from UDP, and 
 
 This is designed to integrate nicely with [gelf built-in Docker logging plugin](https://docs.docker.com/config/containers/logging/gelf/) in input, [Azure Monitor HTTP Data Collector API](https://docs.microsoft.com/en-us/azure/azure-monitor/logs/data-collector-api) in output.
 
+As an extra bonus, it also expose a tiny web application that shows the logs as they arrive, providing a tail-like experience.
+
 ![](https://user-images.githubusercontent.com/6589/114262006-ce20a480-99dd-11eb-924f-1cb0c322dbcd.png)
 
 
