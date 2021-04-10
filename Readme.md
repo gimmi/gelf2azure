@@ -64,6 +64,10 @@ gelf2azure is designed to be used with [gelf built-in Docker logging plugin](htt
 }
 ```
 
+### Other projects with similar goals
+
+- [logspout-loganalytics](https://github.com/veyalla/logspout-loganalytics)
+
 ### Build from sources
 
 ```
