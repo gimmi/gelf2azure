@@ -31,7 +31,9 @@ You should see the log "Hello world!" appear in the browser window:
 
 ![](https://raw.githubusercontent.com/gimmi/gelf2azure/main/docs/browser.png)
 
-Message can be sent from any source, as long as GELF format is used. The following example uses `netcat` to send message:
+Message can be sent from any source, as long as GELF format is used.
+
+With `netcat`
 
 ```
 nc.exe -u 127.0.0.1 12201
