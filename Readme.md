@@ -38,6 +38,12 @@ nc.exe -u 127.0.0.1 12201
 { "host": "example.org", "short_message": "xoxo", "timestamp": 1602850875.683, "_container_name": "agitated_goldberg" }
 ```
 
+Or in bash
+
+```
+echo -n '{"host":"example.org","short_message":"xoxo","timestamp":1602850875.683,"_container_name":"agitated_goldberg"}' > /dev/udp/127.0.0.1/12201
+```
+
 ### Configuration Options
 
 Configuration is done by passing environment variables:
