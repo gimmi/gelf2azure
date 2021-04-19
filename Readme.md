@@ -59,6 +59,27 @@ Configuration is done by passing environment variables:
 | HTTPS_PROXY          |         | Set proxy if needed, something like `http://my.proxy.com:80`                                                         |
 | DEBUG                |         | Use value `app:*` to enable internal logging. Useful for troubleshooting                                             |
 
+### Create Azure Log Analytics Workspace
+
+Execute the following commands in Azure CLI:
+
+```
+az monitor log-analytics workspace create \
+    --resource-group my_group \
+    --location westeurope \
+    --workspace-name my-la-ws
+{
+  "customerId": "THIS IS AZURE_CUSTOMER_ID"
+}
+
+az monitor log-analytics workspace get-shared-keys \
+    --resource-group my_group \
+    --workspace-name my-la-ws
+{
+  "primarySharedKey": "THIS IS AZURE_SHARED_KEY"
+}
+```
+
 ### Setup Docker to send logs to gelf2azure
 
 gelf2azure is designed to be used with [gelf built-in Docker logging plugin](https://docs.docker.com/config/containers/logging/gelf/). To enable it, modify `/etc/docker/daemon.json` as follows:
