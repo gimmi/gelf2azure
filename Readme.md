@@ -65,6 +65,7 @@ Execute the following commands in Azure CLI:
 
 ```
 az monitor log-analytics workspace create \
+    --subscription my_subs \
     --resource-group my_group \
     --location westeurope \
     --workspace-name my-la-ws
@@ -73,6 +74,7 @@ az monitor log-analytics workspace create \
 }
 
 az monitor log-analytics workspace get-shared-keys \
+    --subscription my_subs \
     --resource-group my_group \
     --workspace-name my-la-ws
 {
