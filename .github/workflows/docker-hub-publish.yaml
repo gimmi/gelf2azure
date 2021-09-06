@@ -1,0 +1,31 @@
+name: Build and publish to Docker Hub
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+jobs:
+  docker_build_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Build Tag
+        id: tag
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const ref = '${{ github.ref }}'
+            const tag = ref.startsWith('refs/tags/v') ? ref.substring(11) : 'latest'
+            core.info('tag = ' + tag)
+            core.setOutput('tag', tag)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: gimmi
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          pull: true
+          push: true
+          tags: gimmi/gelf2azure:${{ steps.tag.outputs.tag }}
