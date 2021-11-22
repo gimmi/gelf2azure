@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = function (env) {
     const ifDev = (devVal, otherVal) => env.development ? devVal : otherVal;
@@ -27,13 +28,14 @@ module.exports = function (env) {
             rules: [{
                 test: /\.js$/,
                 include: path.resolve(__dirname, 'src'),
-                use: [ 'babel-loader', 'eslint-loader' ]
+                use: [ 'babel-loader' ]
             }, {
                 test: /\.css$/,
                 use: [ 'style-loader', 'css-loader' ]
             }]
         },
         plugins: [
+            new ESLintPlugin(),
             new HtmlWebpackPlugin({
                 favicon: './src/favicon.png',
                 template: './src/index.html'
