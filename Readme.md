@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgimmi%2Fgelf2azure.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgimmi%2Fgelf2azure?ref=badge_shield)
+
 **gelf2azure is a Docker container that receive logs in GELF format from UDP, and forward it to Azure Monitor using REST API.**
 
 This is designed to integrate nicely with [gelf built-in Docker logging plugin](https://docs.docker.com/config/containers/logging/gelf/) in input, and [Azure Monitor HTTP Data Collector API](https://docs.microsoft.com/en-us/azure/azure-monitor/logs/data-collector-api) in output.
@@ -106,3 +108,7 @@ docker build --pull --no-cache -t gimmi/gelf2azure:latest .
 ```
 
 [1]: https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fgimmi%2Fgelf2azure.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fgimmi%2Fgelf2azure?ref=badge_large)
