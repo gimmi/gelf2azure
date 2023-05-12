@@ -78,6 +78,8 @@ async function send(config, logs) {
         if (error.name === 'AbortError') {
             throw new Error(`Azure API call timed out after ${config.batchMs}ms`)
         }
+
+        throw error;
     } finally {
         clearTimeout(timeoutHandle)
     }
