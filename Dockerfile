@@ -1,4 +1,4 @@
-FROM node:14-alpine3.13 AS client-builder
+FROM node:18-alpine AS client-builder
 
 COPY client/ /build/client/
 
@@ -6,7 +6,7 @@ RUN cd /build/client/ \
  && npm install \
  && npm run build
 
-FROM node:14-alpine3.13
+FROM node:18-alpine
 
 # https://github.com/nodejs/docker-node/blob/master/docs/BestPractices.md#handling-kernel-signals
 RUN apk add --no-cache tini
