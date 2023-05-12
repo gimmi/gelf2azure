@@ -14,8 +14,11 @@ async function sendLoop(config) {
 
     bus.on('log', log => batch.push(log))
 
-    for (; ;) {
-        await timeout(config.batchMs)
+    let uploadMs = Date.now()
+    while (true) {
+        uploadMs = Date.now() - uploadMs
+        await timeout(Math.max(config.batchMs - uploadMs, 0))
+        uploadMs = Date.now()
 
         if (batch.length) {
             const data = batch
