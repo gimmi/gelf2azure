@@ -1,7 +1,8 @@
 import debugFn from 'debug'
 import crypto from 'crypto'
-import AbortController from 'abort-controller'
-import fetch from './fetch.js'
+import timeoutSignal from 'timeout-signal'
+import { default as fetch, AbortError } from 'node-fetch'
+import { ProxyAgent } from 'proxy-agent'
 import bus from './bus.js'
 
 const debug = debugFn('app:azure-monitor')
@@ -51,12 +52,10 @@ async function send(config, logs) {
         .update(signature)
         .digest('base64')
 
-    const abortController = new AbortController();
-    const timeoutHandle = setTimeout(() => abortController.abort(), config.batchMs)
-
     try {
         const res = await fetch(url, {
-            signal: abortController.signal,
+            agent: new ProxyAgent(),
+            signal: timeoutSignal(config.batchMs),
             method: 'POST',
             headers: {
                 'Authorization': `SharedKey ${config.customerId}:${signature}`,
@@ -75,12 +74,10 @@ async function send(config, logs) {
             throw new Error(`HTTP ${res.status} ${res.statusText}`)
         }
     } catch (error) {
-        if (error.name === 'AbortError') {
+        if (error instanceof AbortError) {
             throw new Error(`Azure API call timed out after ${config.batchMs}ms`)
         }
 
         throw error;
-    } finally {
-        clearTimeout(timeoutHandle)
     }
 }
