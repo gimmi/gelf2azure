@@ -1,6 +1,6 @@
-const gelf = require('./gelf-udp-listener')
-const azure = require('./azure-monitor')
-const app = require('./express-app')
+import * as gelf from './gelf-udp-listener.js'
+import * as azure from './azure-monitor.js'
+import * as app from './express-app.js'
 
 const config = {
     customerId: process.env.AZURE_CUSTOMER_ID,

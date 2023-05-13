@@ -1,7 +1,7 @@
-const fetch = require('node-fetch')
-const { ProxyAgent } = require('proxy-agent')
+import fetch from 'node-fetch'
+import { ProxyAgent } from 'proxy-agent'
 
-module.exports = (url, options) => {
+export default (url, options) => {
   const agent = new ProxyAgent()
   return fetch(url, { agent, ...options })
 }

@@ -1,17 +1,14 @@
-const debugFn = require('debug')
-const util = require('util')
-const dgram = require('dgram')
-const zlib = require('zlib')
-const isGzip = require('is-gzip')
-
-const bus = require('./bus')
+import debugFn from 'debug'
+import util from 'util'
+import dgram from 'dgram'
+import zlib from 'zlib'
+import isGzip from 'is-gzip'
+import bus from './bus.js'
 
 const debug = debugFn('app:gelf-udp-listener')
 const gunzip = util.promisify(zlib.gunzip)
 
-Object.assign(module.exports, { create, processMessage })
-
-function create() {
+export function create() {
     return dgram.createSocket('udp4')
         .on('message', onMessage)
         .on('error', onError)
@@ -27,7 +24,7 @@ function onMessage(buffer) {
 
 const chunkedMessages = {}
 
-async function processMessage(buffer) {
+export async function processMessage(buffer) {
     if (buffer[0] === 0x1E && buffer[1] === 0x0F) {
         const id = buffer.readBigUInt64LE(2)
         const index = buffer.readInt8(10)

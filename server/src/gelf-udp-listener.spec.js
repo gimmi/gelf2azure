@@ -1,9 +1,9 @@
 /* eslint-env jasmine */
 
-const util = require('util')
-const zlib = require('zlib')
-const bus = require('./bus')
-const gelf = require('./gelf-udp-listener')
+import util from 'util'
+import zlib from 'zlib'
+import bus from './bus.js'
+import * as gelf from './gelf-udp-listener.js'
 
 const gzip = util.promisify(zlib.gzip)
 

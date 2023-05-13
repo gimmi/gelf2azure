@@ -1,15 +1,12 @@
-const debugFn = require('debug')
-const crypto = require('crypto')
-const AbortController = require('abort-controller')
-
-const fetch = require('./fetch')
-const bus = require('./bus')
+import debugFn from 'debug'
+import crypto from 'crypto'
+import AbortController from 'abort-controller'
+import fetch from './fetch.js'
+import bus from './bus.js'
 
 const debug = debugFn('app:azure-monitor')
 
-Object.assign(module.exports, { sendLoop })
-
-async function sendLoop(config) {
+export async function sendLoop(config) {
     let batch = []
 
     bus.on('log', log => batch.push(log))

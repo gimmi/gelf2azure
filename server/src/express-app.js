@@ -1,13 +1,16 @@
-const debugFn = require('debug')
-const path = require('path')
-const express = require('express')
-const bodyParser = require('body-parser')
-const expressWs = require('express-ws')
+import debugFn from 'debug'
+import path from 'path'
+import express from 'express'
+import bodyParser from 'body-parser'
+import expressWs from 'express-ws'
+import bus from './bus.js'
+import { fileURLToPath } from 'url'
 
 const debug = debugFn('app:express')
-const bus = require('./bus');
 
-module.exports.create = function() {
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+
+export function create() {
     const app = express()
     expressWs(app)
     app.use(bodyParser.urlencoded({ extended: false }))
