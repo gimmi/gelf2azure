@@ -5,29 +5,25 @@ param (
     $Cmd
 )
 
-if ($Cmd -eq 'server') {
-    cd "$PSScriptRoot\server"
+Push-Location "$PSScriptRoot\$Cmd"
+try {
     if (-not (Test-Path node_modules)) {
         npm install
     }
-    $env:DEBUG = "app:*"
-    node src\index.js
+
+    switch ($Cmd) {
+        'server' {
+            $env:DEBUG = "app:*"
+            node src\index.js
+        }
+        'client' {
+            npm run watch
+        }
+        'debugger' {
+            node src\index.js
+        }
+    }
 }
-
-if ($Cmd -eq 'client') {
-    Start-Process -FilePath "http://localhost:54313/"
-
-    cd "$PSScriptRoot\client"
-    if (-not (Test-Path node_modules)) {
-        npm install
-    }
-    npm run watch
-}
-
-if ($Cmd -eq 'debugger') {
-    cd "$PSScriptRoot\debugger"
-    if (-not (Test-Path node_modules)) {
-        npm install
-    }
-    node src\index.js
+finally {
+    Pop-Location
 }
