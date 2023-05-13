@@ -4,6 +4,7 @@ import timeoutSignal from 'timeout-signal'
 import { default as fetch, AbortError } from 'node-fetch'
 import { ProxyAgent } from 'proxy-agent'
 import bus from './bus.js'
+import { setTimeout } from 'timers/promises'
 
 const debug = debugFn('app:azure-monitor')
 
@@ -15,7 +16,7 @@ export async function sendLoop(config) {
     let uploadMs = Date.now()
     while (true) {
         uploadMs = Date.now() - uploadMs
-        await timeout(Math.max(config.batchMs - uploadMs, 0))
+        await setTimeout(config.batchMs - uploadMs)
         uploadMs = Date.now()
 
         if (batch.length) {
@@ -26,10 +27,6 @@ export async function sendLoop(config) {
                 .catch(console.error)
         }
     }
-}
-
-async function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 async function send(config, logs) {
