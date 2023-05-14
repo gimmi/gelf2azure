@@ -15,5 +15,5 @@ app.create().listen(54313, () => console.log('Web app bound on port 54313'))
 
 if (config.customerId) {
     console.log(`Starting Azure send loop customerId=${config.customerId} logType=${config.logType} batchMs=${config.batchMs}`)
-    azure.sendLoop(config).catch(console.error)
+    azure.sendLoop(config)
 }
