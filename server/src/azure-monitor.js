@@ -52,7 +52,7 @@ async function send(config, logs) {
     try {
         const res = await fetch(url, {
             agent: new ProxyAgent(),
-            signal: timeoutSignal(config.batchMs),
+            signal: timeoutSignal(config.timeoutMs),
             method: 'POST',
             headers: {
                 'Authorization': `SharedKey ${config.customerId}:${signature}`,
@@ -72,7 +72,7 @@ async function send(config, logs) {
         }
     } catch (error) {
         if (error instanceof AbortError) {
-            throw new Error(`Azure API call timed out after ${config.batchMs}ms`)
+            throw new Error(`Azure API call timed out after ${config.timeoutMs}ms`)
         }
 
         throw error;

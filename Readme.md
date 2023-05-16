@@ -55,7 +55,8 @@ Configuration is done by passing environment variables:
 | AZURE_CUSTOMER_ID    |         | `CustomerID` (AKA Workspace ID) parameter for [Azure API][1]. Leaving this unset will disable sending data to Azure. |
 | AZURE_SHARED_KEY     |         | `SharedKey` (AKA Primary Key) parameter for [Azure API][1]                                                           |
 | AZURE_LOG_TYPE       |         | `Log-Type` parameter for [Azure API][1]                                                                              |
-| AZURE_BATCH_MS       | 5000    | How often Azure Monitor REST call is made, this is also used as REST call timeout                                    |
+| AZURE_BATCH_MS       | 5000    | How often data is collected for send to Azure Monitor                                                                |
+| AZURE_TIMEOUT_MS     | 30000   | Timeout for Azure Monitor REST call                                                                                  |
 | HTTPS_PROXY          |         | Set proxy if needed, something like `http://my.proxy.com:80`                                                         |
 | DEBUG                |         | Use value `app:*` to enable internal logging. Useful for troubleshooting                                             |
 

@@ -6,7 +6,8 @@ const config = {
     customerId: process.env.AZURE_CUSTOMER_ID,
     sharedKey: process.env.AZURE_SHARED_KEY,
     logType: process.env.AZURE_LOG_TYPE,
-    batchMs: parseInt(process.env.AZURE_BATCH_MS || '5000', 10)
+    batchMs: parseInt(process.env.AZURE_BATCH_MS, 10) || 5_000,
+    timeoutMs: parseInt(process.env.AZURE_TIMEOUT_MS, 10) || 30_000
 }
 
 gelf.create().bind(12201, () => console.log('GELF UDP listener bound on port 12201'))
@@ -14,6 +15,6 @@ gelf.create().bind(12201, () => console.log('GELF UDP listener bound on port 122
 app.create().listen(54313, () => console.log('Web app bound on port 54313'))
 
 if (config.customerId) {
-    console.log(`Starting Azure send loop customerId=${config.customerId} logType=${config.logType} batchMs=${config.batchMs}`)
+    console.log(`Starting Azure send loop customerId=${config.customerId} logType=${config.logType} batchMs=${config.batchMs} timeoutMs=${config.timeoutMs}`)
     azure.sendLoop(config)
 }
